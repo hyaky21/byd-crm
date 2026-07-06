@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.env
+clients.db
+dist/
+build/
+*.spec
+byd_crm.sql
