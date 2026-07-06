@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Paramètres - BYD CRM</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard-wrap">
+
+    <div class="dash-top">
+
+        <div>
+
+           <div class="brand-logos">
+
+    <img src="{{ url_for('static', filename='byd-logo.png') }}" alt="BYD">
+
+    <span class="logo-separator"></span>
+
+    <img src="{{ url_for('static', filename='autonejma-logo.png') }}" alt="Auto Nejma">
+
+</div>
+
+<div class="dash-title">
+    <h1>BYD CRM</h1>
+    <p>Gestion des prospects</p>
+</div>
+
+        </div>
+
+        <div class="dash-buttons">
+
+            <a href="{{ url_for('dashboard') }}"
+               class="main-link">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                Dashboard
+
+            </a>
+
+            <a href="{{ url_for('index') }}"
+               class="main-link">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Nouveau Prospect
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- COMMERCIAUX -->
+    <!-- ========================= -->
+
+    <div class="table-box">
+
+        <h2>Commerciaux</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for commercial in commerciaux %}
+
+                <tr>
+
+                    <td>
+
+                        {{ commercial.nom }}
+
+                    </td>
+
+                    <td>
+
+                        <a href="{{ url_for('edit_commercial', id=commercial.id) }}"
+                           class="edit-btn">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <form action="{{ url_for('delete_commercial', id=commercial.id) }}"
+                              method="POST"
+                              style="display:inline;">
+
+                            <button
+                                class="delete-btn"
+                                onclick="return confirm('Supprimer ce commercial ?')">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <form action="{{ url_for('add_commercial') }}"
+              method="POST"
+              class="inline-form">
+
+            <input
+                type="text"
+                name="nom"
+                placeholder="Nouveau commercial"
+                required>
+
+            <button type="submit">
+
+                Ajouter
+
+            </button>
+
+        </form>
+
+    </div> 
+        <!-- ========================= -->
+    <!-- POTENTIELS -->
+    <!-- ========================= -->
+
+    <div class="table-box">
+
+        <h2>Potentiels</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for potentiel in potentiels %}
+
+                <tr>
+
+                    <td>{{ potentiel.nom }}</td>
+
+                    <td>
+
+                        <a href="{{ url_for('edit_potentiel', id=potentiel.id) }}"
+                           class="edit-btn">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <form action="{{ url_for('delete_potentiel', id=potentiel.id) }}"
+                              method="POST"
+                              style="display:inline;">
+
+                            <button class="delete-btn"
+                                    onclick="return confirm('Supprimer ce potentiel ?')">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <form action="{{ url_for('add_potentiel') }}"
+              method="POST"
+              class="inline-form">
+
+            <input type="text"
+                   name="nom"
+                   placeholder="Nouveau potentiel"
+                   required>
+
+            <button type="submit">
+
+                Ajouter
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- MODELES -->
+    <!-- ========================= -->
+
+    <div class="table-box">
+
+        <h2>Modèles</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for modele in modeles %}
+
+                <tr>
+
+                    <td>{{ modele.nom }}</td>
+
+                    <td>
+
+                        <a href="{{ url_for('edit_modele', id=modele.id) }}"
+                           class="edit-btn">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <form action="{{ url_for('delete_modele', id=modele.id) }}"
+                              method="POST"
+                              style="display:inline;">
+
+                            <button class="delete-btn"
+                                    onclick="return confirm('Supprimer ce modèle ?')">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <form action="{{ url_for('add_modele') }}"
+              method="POST"
+              class="inline-form">
+
+            <input type="text"
+                   name="nom"
+                   placeholder="Nouveau modèle"
+                   required>
+
+            <button type="submit">
+
+                Ajouter
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- VERSIONS -->
+    <!-- ========================= -->
+
+    <div class="table-box">
+
+        <h2>Versions</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for version in versions %}
+
+                <tr>
+
+                    <td>{{ version.nom }}</td>
+
+                    <td>
+
+                        <a href="{{ url_for('edit_version', id=version.id) }}"
+                           class="edit-btn">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <form action="{{ url_for('delete_version', id=version.id) }}"
+                              method="POST"
+                              style="display:inline;">
+
+                            <button class="delete-btn"
+                                    onclick="return confirm('Supprimer cette version ?')">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <form action="{{ url_for('add_version') }}"
+              method="POST"
+              class="inline-form">
+
+            <input type="text"
+                   name="nom"
+                   placeholder="Nouvelle version"
+                   required>
+
+            <button type="submit">
+
+                Ajouter
+
+            </button>
+
+        </form>
+
+    </div>
+        <!-- ========================= -->
+    <!-- COULEURS -->
+    <!-- ========================= -->
+
+    <div class="table-box">
+
+        <h2>Couleurs</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for couleur in couleurs %}
+
+                <tr>
+
+                    <td>{{ couleur.nom }}</td>
+
+                    <td>
+
+                        <a href="{{ url_for('edit_couleur', id=couleur.id) }}"
+                           class="edit-btn">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <form action="{{ url_for('delete_couleur', id=couleur.id) }}"
+                              method="POST"
+                              style="display:inline;">
+
+                            <button class="delete-btn"
+                                    onclick="return confirm('Supprimer cette couleur ?')">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <form action="{{ url_for('add_couleur') }}"
+              method="POST"
+              class="inline-form">
+
+            <input
+                type="text"
+                name="nom"
+                placeholder="Nouvelle couleur"
+                required>
+
+            <button type="submit">
+
+                Ajouter
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- INTERIEURS -->
+    <!-- ========================= -->
+
+    <div class="table-box">
+
+        <h2>Intérieurs</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for interieur in interieurs %}
+
+                <tr>
+
+                    <td>{{ interieur.nom }}</td>
+
+                    <td>
+
+                        <a href="{{ url_for('edit_interieur', id=interieur.id) }}"
+                           class="edit-btn">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <form action="{{ url_for('delete_interieur', id=interieur.id) }}"
+                              method="POST"
+                              style="display:inline;">
+
+                            <button class="delete-btn"
+                                    onclick="return confirm('Supprimer cet intérieur ?')">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <form action="{{ url_for('add_interieur') }}"
+              method="POST"
+              class="inline-form">
+
+            <input
+                type="text"
+                name="nom"
+                placeholder="Nouvel intérieur"
+                required>
+
+            <button type="submit">
+
+                Ajouter
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- MOTORISATIONS -->
+    <!-- ========================= -->
+
+    <div class="table-box">
+
+        <h2>Motorisations</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for motorisation in motorisations %}
+
+                <tr>
+
+                    <td>{{ motorisation.nom }}</td>
+
+                    <td>
+
+                        <a href="{{ url_for('edit_motorisation', id=motorisation.id) }}"
+                           class="edit-btn">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <form action="{{ url_for('delete_motorisation', id=motorisation.id) }}"
+                              method="POST"
+                              style="display:inline;">
+
+                            <button class="delete-btn"
+                                    onclick="return confirm('Supprimer cette motorisation ?')">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <form action="{{ url_for('add_motorisation') }}"
+              method="POST"
+              class="inline-form">
+
+            <input
+                type="text"
+                name="nom"
+                placeholder="Nouvelle motorisation"
+                required>
+
+            <button type="submit">
+
+                Ajouter
+
+            </button>
+
+        </form>
+
+    </div> 
+        <!-- ========================= -->
+    <!-- FINANCEMENTS -->
+    <!-- ========================= -->
+
+    <div class="table-box">
+
+        <h2>Financements</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for financement in financements %}
+
+                <tr>
+
+                    <td>{{ financement.nom }}</td>
+
+                    <td>
+
+                        <a href="{{ url_for('edit_financement', id=financement.id) }}"
+                           class="edit-btn">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <form action="{{ url_for('delete_financement', id=financement.id) }}"
+                              method="POST"
+                              style="display:inline;">
+
+                            <button class="delete-btn"
+                                    onclick="return confirm('Supprimer ce financement ?')">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <form action="{{ url_for('add_financement') }}"
+              method="POST"
+              class="inline-form">
+
+            <input
+                type="text"
+                name="nom"
+                placeholder="Nouveau financement"
+                required>
+
+            <button type="submit">
+
+                Ajouter
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- CANAUX -->
+    <!-- ========================= -->
+
+    <div class="table-box">
+
+        <h2>Canaux</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for canal in canaux %}
+
+                <tr>
+
+                    <td>{{ canal.nom }}</td>
+
+                    <td>
+
+                        <a href="{{ url_for('edit_canal', id=canal.id) }}"
+                           class="edit-btn">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <form action="{{ url_for('delete_canal', id=canal.id) }}"
+                              method="POST"
+                              style="display:inline;">
+
+                            <button class="delete-btn"
+                                    onclick="return confirm('Supprimer ce canal ?')">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <form action="{{ url_for('add_canal') }}"
+              method="POST"
+              class="inline-form">
+
+            <input
+                type="text"
+                name="nom"
+                placeholder="Nouveau canal"
+                required>
+
+            <button type="submit">
+
+                Ajouter
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- DETAILS CANAL -->
+    <!-- ========================= -->
+
+    <div class="table-box">
+
+        <h2>Détails Canal</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Nom</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for detail in details %}
+
+                <tr>
+
+                    <td>{{ detail.nom }}</td>
+
+                    <td>
+
+                        <a href="{{ url_for('edit_detail', id=detail.id) }}"
+                           class="edit-btn">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <form action="{{ url_for('delete_detail', id=detail.id) }}"
+                              method="POST"
+                              style="display:inline;">
+
+                            <button class="delete-btn"
+                                    onclick="return confirm('Supprimer ce détail ?')">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <form action="{{ url_for('add_detail') }}"
+              method="POST"
+              class="inline-form">
+
+            <input
+                type="text"
+                name="nom"
+                placeholder="Nouveau détail"
+                required>
+
+            <button type="submit">
+
+                Ajouter
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

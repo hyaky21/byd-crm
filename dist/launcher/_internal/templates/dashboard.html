@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Dashboard - BYD CRM</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard-wrap">
+
+    <div class="dash-top">
+
+        <div>
+
+            <div class="brand-logos">
+ <div class="brand-logos">
+
+    <img src="{{ url_for('static', filename='byd-logo.png') }}" alt="BYD">
+
+    <span class="logo-separator"></span>
+
+    <img src="{{ url_for('static', filename='autonejma-logo.png') }}" alt="Auto Nejma">
+
+</div>
+</div>
+
+<div class="dash-title">
+    <h1>BYD CRM</h1>
+    <p>Gestion des prospects</p>
+</div>
+
+        </div>
+
+        <div class="dash-buttons">
+
+            <a href="{{ url_for('index') }}"
+               class="main-link">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Nouveau Prospect
+
+            </a>
+
+            <a href="{{ url_for('settings') }}"
+               class="main-link">
+
+                <i class="fa-solid fa-gear"></i>
+
+                Paramètres
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% for category,message in messages %}
+
+    <div class="flash {{ category }}">
+
+        {{ message }}
+
+    </div>
+
+    {% endfor %}
+
+    {% endwith %}
+
+    <!-- ======================= -->
+    <!-- STATISTIQUES -->
+    <!-- ======================= -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <span>Total prospects</span>
+
+            <strong>
+
+                {{ prospects|length }}
+
+            </strong>
+
+        </div>
+
+        <div class="stat-card">
+
+            <span>Commercials</span>
+
+            <strong>
+
+                {{ prospects|map(attribute='commercial.nom')|list|length }}
+
+            </strong>
+
+        </div>
+
+        <div class="stat-card">
+
+            <span>Modèles</span>
+
+            <strong>
+
+                {{ prospects|map(attribute='modele.nom')|list|length }}
+
+            </strong>
+
+        </div>
+
+        <div class="stat-card">
+
+            <span>Opportunités</span>
+
+            <strong>
+
+                {{ prospects|length }}
+
+            </strong>
+
+        </div>
+
+    </div>
+    <!-- ======================= -->
+<!-- GRAPHES -->
+<!-- ======================= -->
+
+<div class="charts-grid">
+
+    <div class="chart-card">
+        <h3>Prospects par modèle</h3>
+        <canvas id="chartModeles"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Prospects par commercial</h3>
+        <canvas id="chartCommerciaux"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Prospects par potentiel</h3>
+        <canvas id="chartPotentiels"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Prospects par mois</h3>
+        <canvas id="chartMois"></canvas>
+    </div>
+
+</div>
+<div class="filters-box">
+
+    <input
+        type="text"
+        id="filterNom"
+        placeholder="Filtrer par nom client...">
+
+    <input
+        type="date"
+        id="filterDate">
+
+    <select id="filterModele">
+        <option value="">Tous les modèles</option>
+
+        {% for modele in modeles %}
+            <option value="{{ modele.nom }}">
+                {{ modele.nom }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <select id="filterCommercial">
+        <option value="">Tous les commerciaux</option>
+
+        {% for commercial in commerciaux %}
+            <option value="{{ commercial.nom }}">
+                {{ commercial.nom }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button
+        type="button"
+        onclick="resetFilters()">
+
+        Réinitialiser
+
+    </button>
+
+</div>
+
+    <!-- ======================= -->
+    <!-- TABLE -->
+    <!-- ======================= -->
+
+    <div class="table-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <th>Commercial</th>
+
+                    <th>Client</th>
+
+                    <th>Téléphone</th>
+
+                    <th>Modèle</th>
+
+                    <th>Version</th>
+
+                    <th>Potentiel</th>
+
+                    <th>Ville</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for prospect in prospects %}
+
+                <tr>
+
+                    <td>
+
+                        {{ prospect.date_contact }}
+
+                    </td>
+
+                    <td>
+
+                        {{ prospect.commercial.nom }}
+
+                    </td>
+
+                    <td>
+
+                        {{ prospect.nom_client }}
+
+                        {{ prospect.prenom_client }}
+
+                    </td>
+
+                    <td>
+
+                        {{ prospect.telephone }}
+
+                    </td>
+
+                    <td>
+
+                        {{ prospect.modele.nom }}
+
+                    </td>
+                                        <td>
+
+                        {{ prospect.version.nom }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="badge">
+
+                            {{ prospect.potentiel.nom }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        {% if prospect.ville %}
+
+                            {{ prospect.ville }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        <div class="actions">
+
+                            <a href="{{ url_for('edit_prospect', id=prospect.id) }}"
+                               class="edit-btn">
+
+                                <i class="fa-solid fa-pen"></i>
+
+                            </a>
+
+                            <form action="{{ url_for('delete_prospect', id=prospect.id) }}"
+                                  method="POST"
+                                  style="display:inline;">
+
+                                <button
+                                    type="submit"
+                                    class="delete-btn"
+                                    onclick="return confirm('Voulez-vous supprimer ce prospect ?')">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="9" class="empty">
+
+                        Aucun prospect enregistré.
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="bottom-links">
+
+        <a href="{{ url_for('index') }}"
+           class="main-link">
+
+            Ajouter un prospect
+
+        </a>
+
+        <a href="{{ url_for('settings') }}"
+           class="main-link">
+
+            Paramètres
+
+        </a>
+
+    </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const rows = document.querySelectorAll("tbody tr");
+
+    const statsModeles = {};
+    const statsCommerciaux = {};
+    const statsPotentiels = {};
+    const statsMois = {};
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+
+        if (cells.length >= 7) {
+            const date = cells[0].innerText.trim();
+            const commercial = cells[1].innerText.trim();
+            const modele = cells[4].innerText.trim();
+            const potentiel = cells[6].innerText.trim();
+
+            statsCommerciaux[commercial] = (statsCommerciaux[commercial] || 0) + 1;
+            statsModeles[modele] = (statsModeles[modele] || 0) + 1;
+            statsPotentiels[potentiel] = (statsPotentiels[potentiel] || 0) + 1;
+            const mois = date.substring(0, 7);
+
+statsMois[mois] = (statsMois[mois] || 0) + 1;
+        }
+    });
+
+    function createBarChart(id, dataObject, label) {
+        new Chart(document.getElementById(id), {
+            type: "bar",
+            data: {
+                labels: Object.keys(dataObject),
+                datasets: [{
+                    label: label,
+                    data: Object.values(dataObject)
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0,
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    createBarChart("chartModeles", statsModeles, "Modèles");
+    createBarChart("chartCommerciaux", statsCommerciaux, "Commerciaux");
+    createBarChart("chartPotentiels", statsPotentiels, "Potentiels");
+    createBarChart("chartMois", statsMois, "Mois");
+
+});
+const filterNom = document.getElementById("filterNom");
+const filterDate = document.getElementById("filterDate");
+const filterModele = document.getElementById("filterModele");
+const filterCommercial = document.getElementById("filterCommercial");
+
+function applyFilters() {
+    const nomValue = filterNom.value.toLowerCase();
+    const dateValue = filterDate.value;
+    const modeleValue = filterModele.value.trim().toLowerCase();
+    const commercialValue = filterCommercial.value.trim().toLowerCase();
+
+    document.querySelectorAll("tbody tr").forEach(row => {
+        const cells = row.querySelectorAll("td");
+
+        if (cells.length >= 7) {
+            const date = cells[0].innerText.trim();
+            const client = cells[2].innerText.toLowerCase();
+            const modele = cells[4].innerText.trim().toLowerCase();
+            const commercial = cells[1].innerText.trim().toLowerCase();
+
+            const matchNom = client.includes(nomValue);
+            const matchDate = !dateValue || date === dateValue;
+            const matchModele = !modeleValue || modele === modeleValue;
+            const matchCommercial = !commercialValue || commercial === commercialValue;
+
+            row.style.display =
+    matchNom &&
+    matchDate &&
+    matchModele &&
+    matchCommercial
+        ? ""
+        : "none";
+        }
+    });
+}
+
+function resetFilters() {
+    filterNom.value = "";
+    filterDate.value = "";
+    filterModele.value = "";
+    filterCommercial.value = "";
+    applyFilters();
+}
+
+filterNom.addEventListener("input", applyFilters);
+filterDate.addEventListener("change", applyFilters);
+filterModele.addEventListener("change", applyFilters);
+filterCommercial.addEventListener("change", applyFilters);
+</script>
+
+</body>
+    
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>{{ titre }}</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="card-header">
+
+        <span>BYD CRM</span>
+
+        <h2>{{ titre }}</h2>
+
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+
+        <div class="flash {{ category }}">
+            {{ message }}
+        </div>
+
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ action }}">
+
+        <label>Nom</label>
+
+        <input
+            type="text"
+            name="nom"
+            value="{{ valeur }}"
+            required>
+
+        <div style="display:flex;gap:15px;margin-top:20px;">
+
+            <button type="submit">
+
+                Enregistrer
+
+            </button>
+
+            <a href="{{ url_for('settings') }}"
+               class="main-link">
+
+                Annuler
+
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>

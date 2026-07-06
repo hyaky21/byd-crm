@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation BYD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="brand">
+    <div class="brand-line"></div>
+    <h1>BYD Auto Nejma</h1>
+    <p>Lead Management System · Marrakech</p>
+</div>
+
+<div class="card center">
+    <div class="success-icon">✓</div>
+    <h2>Prospect enregistré</h2>
+    <p class="muted">Les informations ont été ajoutées au tableau de bord commercial.</p>
+
+    <a href="{{ url_for('index') }}" class="main-link">Nouvelle fiche</a>
+    <a href="{{ url_for('dashboard') }}" class="link">Tableau de bord</a>
+</div>
+
+</body>
+</html>
